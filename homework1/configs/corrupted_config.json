@@ -1,0 +1,4 @@
+"LOG_DIR": "./log_",
+"REPORT_DIR": "./reports_",
+"TEST_STRING": "./test",
+"REPORT_SIZE": 2
