@@ -9,6 +9,3 @@
 
 Запуск тестов:
   - `python test.py -v`
-
-### Автор
-slack: Vasilii Fadeev (v.fadeev)

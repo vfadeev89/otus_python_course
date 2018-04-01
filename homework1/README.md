@@ -10,6 +10,3 @@
 
 Запуск тестов:
   - `python log_analyzer_tests.py -v`
-
-### Автор
-slack: Vasilii Fadeev (v.fadeev)
