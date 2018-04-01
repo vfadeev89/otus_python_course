@@ -36,7 +36,6 @@ GENDERS = {
     MALE: "male",
     FEMALE: "female",
 }
-EMPTY_VALUES = (None, (), [], {}, '')
 
 
 class ValidationError(Exception):
@@ -45,6 +44,7 @@ class ValidationError(Exception):
 
 class Field(object):
     __metaclass__ = ABCMeta
+    empty_values = (None, (), [], {}, '')
 
     def __init__(self, required=False, nullable=False):
         self.required = required
@@ -143,7 +143,7 @@ class Request(object):
                 continue
 
             value = getattr(self, name)
-            if value in EMPTY_VALUES and not field.nullable:
+            if value in field.empty_values and not field.nullable:
                 self.errors[name] = "Field can't be blank"
 
             try:
@@ -167,17 +167,6 @@ class OnlineScoreRequest(Request):
     phone = PhoneField(required=False, nullable=True)
     birthday = BirthDayField(required=False, nullable=True)
     gender = GenderField(required=False, nullable=True)
-
-    def validate(self):
-        super(OnlineScoreRequest, self).validate()
-        if self.is_valid():
-            required_pairs = (
-                ("phone", "email"),
-                ("first_name", "last_name"),
-                ("gender", "birthday")
-            )
-            if not any(all(name in self.base_fields for name in pair) for pair in required_pairs):
-                self.errors["arguments"] = "Invalid arguments pairs"
 
 
 class MethodRequest(Request):
