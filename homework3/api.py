@@ -11,6 +11,7 @@ from abc import ABCMeta, abstractmethod
 from datetime import datetime
 import six
 import scoring
+from store import Store
 
 SALT = "Otus"
 ADMIN_LOGIN = "admin"
@@ -138,6 +139,7 @@ class Request(object):
     def validate(self):
         for name, field in self.fields:
             if name not in self.base_fields:
+                setattr(self, name, None)
                 if field.required:
                     self.errors[name] = "Field is required"
                 continue
@@ -258,7 +260,7 @@ class MainHTTPHandler(BaseHTTPRequestHandler):
     router = {
         "method": method_handler
     }
-    store = None
+    store = Store()
 
     def get_request_id(self, headers):
         return headers.get('HTTP_X_REQUEST_ID', uuid.uuid4().hex)

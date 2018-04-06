@@ -2,7 +2,7 @@
   "account": "horns&hoofs",
   "login": "admin",
   "method": "clients_interests",
-  "token": "edae64af8581fb1aab2295312b7a7d6f44cb9ee40b0b2b7ad1f897389059ddff7ccdfd7cc440e7db78e0801abde8e4cc42e0f5cd5b0e7613bff0dbbd5a436e4c",
+  "token": "f3a265e7f2cb34d2d9147794c662711ce523a4f59d2c795746d1341b2013d3d16b86a219d614ecd4d058257fd2bd1725315f67c3ed8f66469eae1c83249d886e",
   "arguments": {
     "client_ids": [
       1,
