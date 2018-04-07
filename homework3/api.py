@@ -11,7 +11,6 @@ from abc import ABCMeta, abstractmethod
 from datetime import datetime
 import six
 import scoring
-from store import Store
 
 SALT = "Otus"
 ADMIN_LOGIN = "admin"
@@ -260,7 +259,7 @@ class MainHTTPHandler(BaseHTTPRequestHandler):
     router = {
         "method": method_handler
     }
-    store = Store()
+    store = None
 
     def get_request_id(self, headers):
         return headers.get('HTTP_X_REQUEST_ID', uuid.uuid4().hex)
