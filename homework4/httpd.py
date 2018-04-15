@@ -8,7 +8,7 @@ from http_server.server import ThreadedServer
 
 def parse_sys_args():
     parser = argparse.ArgumentParser(description="Simple http server")
-    parser.add_argument("-i", "--host", dest="host", default="127.0.0.1")
+    parser.add_argument("-i", "--host", dest="host", default="0.0.0.0")
     parser.add_argument("-p", "--port", dest="port", type=int, default=8080)
     parser.add_argument("-w", "--workers", dest="workers", type=int, default=10)
     parser.add_argument("-r", "--root", dest="document_root", default="")
