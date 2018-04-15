@@ -1,12 +1,13 @@
 import multiprocessing
 import os
 import socket
+import threading
 
 from constants import REQUEST_QUEUE_SIZE, BUFFER_SIZE
 from request import RequestHandler, Request
 
 
-class IterativeServer(object):
+class ThreadedServer(object):
     def __init__(self, host, port, document_root, logger=None):
         self.socket = None
         self.host = host
@@ -23,6 +24,14 @@ class IterativeServer(object):
         except socket.error as e:
             raise RuntimeError(e)
 
+    def request_handler(self, connection, address):
+        data = connection.recv(BUFFER_SIZE)
+        self.logger.info("\n%s", data)
+        request = Request.create_request(data)
+        response = str(RequestHandler(request, self.document_root).response)
+        connection.sendall(response)
+        connection.close()
+
     def serve_forever(self):
         self.create_socket()
         while True:
@@ -31,16 +40,8 @@ class IterativeServer(object):
                 self.logger.info("Connection accepted. Process: {} PID: {}".format(
                                  multiprocessing.current_process().name, os.getpid()))
 
-                data = connection.recv(BUFFER_SIZE)
-                if not data:
-                    connection.close()
-                    self.logger.info("Connection from {} closed, cause no data received".format(address))
-                    continue
-
-                self.logger.info("\n%s", data)
-                request = Request.create_request(data)
-                response = str(RequestHandler(request, self.document_root).response)
-                connection.sendall(response)
-                connection.close()
+                thread = threading.Thread(target=self.request_handler, args=(connection, address))
+                thread.daemon = True
+                thread.start()
             except socket.error:
                 self.socket.close()
